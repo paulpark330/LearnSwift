@@ -8,8 +8,10 @@
 import UIKit
 
 class AppleProductsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
     
+    enum SectionType: Int, CaseIterable {
+        case mac, iphone, ipad
+    }
     
     
     // MARK: - Class Properties
@@ -51,6 +53,7 @@ class AppleProductsViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ProductTableHeaderView") as? ProductTableHeaderView else {
@@ -59,11 +62,11 @@ class AppleProductsViewController: UIViewController, UITableViewDataSource, UITa
         
         switch section {
         case 0:
-            headerView.headerTitle = "Macs"
+            headerView.configure(headerTitle: "Macs")
         case 1:
-            headerView.headerTitle = "iPhones"
+            headerView.configure(headerTitle: "iPhones")
         case 2:
-            headerView.headerTitle = "iPads"
+            headerView.configure(headerTitle: "iPads")
         default:
             return nil
         }
@@ -74,19 +77,19 @@ class AppleProductsViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: - UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return SectionType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
+        switch SectionType(rawValue: section) {
+        case .mac:
             return appleProducts.macs.count
-        case 1:
+        case .iphone:
             return appleProducts.iPhones.count
-        case 2:
+        case .ipad:
             return appleProducts.iPads.count
-        default:
-            return 1
+        case .none:
+            return 0
         }
     }
     
@@ -97,12 +100,12 @@ class AppleProductsViewController: UIViewController, UITableViewDataSource, UITa
         
         var product: ProductDetail?
         
-        switch indexPath.section {
-        case 0:
+        switch SectionType(rawValue: indexPath.section) {
+        case .mac:
             product = appleProducts.macs[indexPath.row]
-        case 1:
+        case .iphone:
             product = appleProducts.iPhones[indexPath.row]
-        case 2:
+        case .ipad:
             product = appleProducts.iPads[indexPath.row]
         default:
             return UITableViewCell()

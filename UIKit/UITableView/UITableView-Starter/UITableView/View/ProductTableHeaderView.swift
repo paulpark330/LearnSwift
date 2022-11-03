@@ -9,15 +9,9 @@ import UIKit
 
 class ProductTableHeaderView: UITableViewHeaderFooterView {
     
-    var headerTitle: String = "" {
-        didSet {
-            let attributedString = NSMutableAttributedString(string: headerTitle)
-            attributedString.addAttribute(NSAttributedString.Key.kern, value: 14, range: NSRange(location: 0, length: attributedString.length))
-            headerLabel.attributedText = attributedString
-        }
-    }
-    
     // MARK: - UI Properties
+    
+    static let cellID = "ProductTableHeaderView"
     
     private var headerLabel: UILabel = {
         let label = UILabel()
@@ -52,8 +46,7 @@ class ProductTableHeaderView: UITableViewHeaderFooterView {
     
     private func setUpUI() {
         
-        contentView.backgroundColor = UIColor(named: "Cream")
-        
+    
         contentView.addSubview(headerLabel)
         contentView.addSubview(bottomLineView)
         
@@ -67,5 +60,11 @@ class ProductTableHeaderView: UITableViewHeaderFooterView {
             bottomLineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             bottomLineView.heightAnchor.constraint(equalToConstant: 1)
         ])
+    }
+    
+    func configure(headerTitle: String) {
+        let attributedString = NSMutableAttributedString(string: headerTitle)
+        attributedString.addAttribute(NSAttributedString.Key.kern, value: 14, range: NSRange(location: 0, length: attributedString.length))
+        headerLabel.attributedText = attributedString
     }
 }
